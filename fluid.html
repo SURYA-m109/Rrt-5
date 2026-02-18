@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>DrivePlyr - Fluid Player</title>
+    <script src="https://cdn.fluidplayer.com/v3/current/fluidplayer.min.js"></script>
+    <style>
+        body, html { margin: 0; padding: 0; height: 100%; background: #000; }
+        #video-player { width: 100%; height: 100%; }
+    </style>
+</head>
+<body>
+    <video id="video-player"><source src="" type="video/mp4"></video>
+
+    <script>
+        var apikey = ['AIzaSyCt3DULzE2trDJhfFUosWZT-3GEObbMqVU', 'AIzaSyCsbx8BSyLwkw6XX6Lg5OF1U0HNtI9VmCY'][Math.floor(Math.random() * 2)];
+        const urlParams = new URLSearchParams(window.location.search);
+        const id = urlParams.get('id');
+
+        if(id) {
+            let driveid = JSON.parse(atob(id)).id;
+            let videoSrc = `https://www.googleapis.com/drive/v3/files/${driveid}?alt=media&key=${apikey}`;
+            document.querySelector('source').src = videoSrc;
+            
+            fluidPlayer('video-player', {
+                layoutControls: { fillToContainer: true, primaryColor: "#e657ff" }
+            });
+        }
+    </script>
+</body>
+</html>
