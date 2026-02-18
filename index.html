@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DrivePlyr - Link Converter & Player</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body { background-color: #121212; color: white; font-family: sans-serif; }
+        .hero-section { padding: 50px 20px; text-align: center; background: #1f1f1f; border-bottom: 3px solid #e657ff; }
+        .main-container { max-width: 800px; margin: 50px auto; padding: 20px; }
+        .input-group { margin-bottom: 30px; }
+        .form-control { background: #222; color: white; border: 1px solid #444; }
+        .form-control:focus { background: #222; color: white; border-color: #e657ff; box-shadow: none; }
+        .card { background: #1f1f1f; border: 1px solid #333; color: white; transition: 0.3s; cursor: pointer; }
+        .card:hover { border-color: #e657ff; transform: translateY(-5px); }
+        .btn-convert { background: #e657ff; color: white; font-weight: bold; border: none; }
+        .btn-convert:hover { background: #d147e6; color: white; }
+    </style>
+</head>
+<body>
+
+<div class="hero-section">
+    <h1>DrivePlyr</h1> 
+    <p>Paste Google Drive link and choose your player</p>
+</div>
+
+<div class="main-container">
+    <div class="input-group">
+        <input type="text" id="driveLink" class="form-control form-control-lg" placeholder="Paste Google Drive Link here...">
+        <button class="btn btn-convert btn-lg" onclick="generateLink()">Process Link</button>
+    </div>
+
+    <div id="status" class="text-center mb-4 text-info"></div>
+
+    <div class="row text-center">
+        <div class="col-md-4 mb-3">
+            <div class="card p-4" onclick="openPlayer('plyr.html')">
+                <h3>Plyr.js</h3>
+                <small>Smooth & Simple</small>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card p-4" onclick="openPlayer('fluid.html')">
+                <h3>Fluid</h3>
+                <small>YouTube Style</small>
+            </div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <div class="card p-4" onclick="openPlayer('vlitejs.html')">
+                <h3>Vlite</h3>
+                <small>Ultra Fast</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let encodedID = "";
+
+    function generateLink() {
+        const link = document.getElementById('driveLink').value;
+        const match = link.match(/[-\w]{25,}/);
+        
+        if (match && match[0]) {
+            const driveID = match[0];
+            const jsonStr = JSON.stringify({ id: driveID });
+            encodedID = btoa(jsonStr);
+            
+            document.getElementById('status').innerText = "✅ Link Processed! Now click on a player below.";
+            document.getElementById('status').style.color = "#00ff00";
+        } else {
+            alert("Please enter a valid Google Drive Link!");
+        }
+    }
+
+    function openPlayer(playerPage) {
+        if (!encodedID) {
+            alert("First paste a link and click 'Process Link'");
+            return;
+        }
+        window.open(`${playerPage}?id=${encodedID}`, '_blank');
+    }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>DrivePlyr - Plyr Player</title>
+  <link rel="icon" href="https://raw.githubusercontent.com/SH20RAJ/DrivePlyr/main/drive-logo.png">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/CDNSFree2/Plyr/plyr.css" />
+  <style>
+    html, body { height: 100%; margin: 0; padding: 0; background: #000; }
+    .plyr { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+    :root { --plyr-color-main: #e657ff; }
+  </style>
+</head>
+<body>
+
+<div id="container">
+  <video id="vid1" playsinline controls poster="https://i.ibb.co/MDJ8Pq0g/original.png">
+    <source src="https://rebrad.ly/sample-video" type="video/mp4" />
+  </video>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/plyr/3.6.7/plyr.min.js"></script>
+<script>
+  // Controls settings
+  var controls = ['play-large', 'play', 'fast-forward', 'progress', 'current-time', 'duration', 'mute', 'volume', 'captions', 'settings', 'pip', 'airplay', 'fullscreen'];
+  const player = new Plyr('#vid1', {controls});
+
+  // API Keys Rotation
+  var apikey = ['AIzaSyCt3DULzE2trDJhfFUosWZT-3GEObbMqVU', 'AIzaSyCsbx8BSyLwkw6XX6Lg5OF1U0HNtI9VmCY', 'AIzaSyBLMJAT6oqTZxAMsCsMjXzoo4lkJL4MmfM', 'AIzaSyCIY6fomcJxOt0XQ_naa1rzfd5wlOMGKDY'][Math.floor(Math.random() * 4)];
+
+  function getparam(a) { return new URL(window.location.href).searchParams.get(a); }
+
+  let video = document.getElementById('vid1');
+  if(getparam('id')){
+    try {
+      let json = JSON.parse(atob(getparam('id')));
+      let driveid = json.id;
+      video.src = `https://www.googleapis.com/drive/v3/files/${driveid}?alt=media&key=${apikey}`;
+    } catch(e) { console.log("Invalid ID"); }
+  }
+</script>
+</body>
+</html>
